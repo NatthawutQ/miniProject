@@ -8,6 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import BookingModal from "../../components/booking/BookingModal";
 
+
 const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: 275,
@@ -118,6 +119,7 @@ export default function CardBooking() {
       return data;
     });
     setRooms(rooms);
+    setButtonVisible(false);
   };
 
   const checkIn = (name, id) => {
@@ -129,7 +131,10 @@ export default function CardBooking() {
       return data;
     });
     setRooms(details);
+    setButtonVisible(true);
   };
+
+  const [buttonVisible, setButtonVisible] = useState(false);
 
   return (
     <Grid container className={classes.control} spacing={3}>
@@ -146,7 +151,7 @@ export default function CardBooking() {
                   ตึก {item.building}
                 </Typography>
                 <Typography variant="h5" component="h2">
-                 ห้อง {item.roomNumber}
+                  ห้อง {item.roomNumber}
                 </Typography>
                 <Typography className={classes.pos} color="textSecondary">
                   {item.description}
@@ -171,14 +176,18 @@ export default function CardBooking() {
                   roomId={item.id}
                   checkIn={(name, roomId) => checkIn(name, roomId)}
                 />
-                <Button
-                  disabled={item.status === "ว่าง" ? true : false}
-                  variant="outlined"
-                  color="secondary"
-                  onClick={() => checkoutStatus(item.id)}
-                >
-                  Checkout
-                </Button>
+                {buttonVisible && (
+                  <div>
+                    <Button
+                      disabled={item.status === "ว่าง" ? true : false}
+                      variant="outlined"
+                      color="secondary"
+                      onClick={() => checkoutStatus(item.id)}
+                    >
+                      Checkout
+                    </Button>
+                  </div>
+                )}
               </CardActions>
             </Card>
           </Grid>
